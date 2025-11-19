@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thalapathy Arcade | Ultimate Version</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="game-bar" class="hidden">
+        <div class="bar-left">
+            <button class="small-btn themed-btn" onclick="managePlayers('add')">➕ Joueur</button>
+            <button class="small-btn delete-btn themed-btn" onclick="managePlayers('remove')">➖ Joueur</button>
+        </div>
+        <div class="bar-center">
+            <div id="timer-circle">20</div>
+        </div>
+        <div class="bar-right">
+            <button class="small-btn exit-btn themed-btn" onclick="goHome()">Menu</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>THALAPATHY <span class="highlight">ARCADE</span></h1>
+    </header>
+
+    <main>
+        
+        <section id="intro-screen" class="active-screen centered-view">
+            <h2>The Ultimate Fan Game</h2>
+            <button class="action-btn big-start" onclick="showSetup()">JOUER MAINTENANT</button>
+        </section>
+
+        <section id="setup-count" class="hidden centered-view">
+            <h2>Combien de joueurs ?</h2>
+            <input type="number" id="player-count-input" min="1" max="10" value="2">
+            <button class="action-btn" onclick="generateNameInputs()">SUIVANT</button>
+        </section>
+
+        <section id="setup-names" class="hidden centered-view">
+            <h2>Entrez les Prénoms</h2>
+            <div id="names-container"></div>
+            <button class="action-btn" onclick="startIntroSequence()">VALIDER</button>
+        </section>
+
+        <section id="home-menu" class="hidden centered-view">
+            <h2 id="turn-indicator">C'est au tour de : <span id="current-player-span" class="player-name-display">???</span></h2>
+            <div class="current-scores" id="mini-scores"></div>
+            
+            <div class="switch-container">
+                <button id="mode-toggle-btn" class="mode-btn green-mode" onclick="toggleGameMode()">🟢 ROULETTE ACTIVÉE</button>
+            </div>
+
+            <div class="menu-grid">
+                <div id="card-blindtest" class="game-card" onclick="manualSelectGame('blindtest')">
+                    <div class="icon">🎵</div>
+                    <h3>Master Beat</h3>
+                </div>
+                <div id="card-punch" class="game-card" onclick="manualSelectGame('punch')">
+                    <div class="icon">🔥</div>
+                    <h3>Punch Quiz</h3>
+                </div>
+                <div id="card-emoji" class="game-card" onclick="manualSelectGame('emoji')">
+                    <div class="icon">🦁</div>
+                    <h3>Emoji Quiz</h3>
+                </div>
+            </div>
+
+            <button id="spin-btn" class="action-btn spin-btn" onclick="spinTheWheel()">🎲 LANCER LA ROULETTE 🎲</button>
+            <p id="roulette-msg"></p>
+            
+            <button class="secondary-btn themed-btn small-link" onclick="showLeaderboard()">🏆 Voir le Podium</button>
+        </section>
+
+        <section id="game-blindtest" class="game-screen hidden centered-view">
+            <h2 class="player-turn-title">C'est à <span class="current-player-name">...</span> de jouer !</h2>
+            <div class="game-container">
+                <div class="audio-player-visual question-block">
+                    <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+                </div>
+                <button id="play-btn" class="themed-btn">▶ Écouter</button>
+                <div id="bt-options" class="options-grid"></div>
+                <p class="feedback-text"></p>
+                <button id="next-btn-bt" class="action-btn hidden" onclick="nextTurn()">QUESTION SUIVANTE ➡</button>
+            </div>
+        </section>
+
+        <section id="game-punch" class="game-screen hidden centered-view">
+            <h2 class="player-turn-title">C'est à <span class="current-player-name">...</span> de jouer !</h2>
+            <div class="game-container">
+                <div class="quote-box question-block">
+                    <p id="quote-text">"..."</p>
+                </div>
+                <div id="punch-options" class="options-grid"></div>
+                <p class="feedback-text"></p>
+                <button id="next-btn-punch" class="action-btn hidden" onclick="nextTurn()">QUESTION SUIVANTE ➡</button>
+            </div>
+        </section>
+
+        <section id="game-emoji" class="game-screen hidden centered-view">
+            <h2 class="player-turn-title">C'est à <span class="current-player-name">...</span> de jouer !</h2>
+            <div class="quiz-container">
+                <div id="emoji-display" class="emoji-box question-block">🦁 🍫 ❄️</div>
+                <input type="text" id="user-guess" placeholder="Nom du film...">
+                <button class="action-btn" onclick="submitEmojiAnswer()">VÉRIFIER</button>
+                <p id="feedback-msg" class="feedback-text"></p>
+                <button id="next-btn-emoji" class="action-btn hidden" onclick="nextTurn()">QUESTION SUIVANTE ➡</button>
+            </div>
+        </section>
+
+        <section id="leaderboard-screen" class="hidden centered-view">
+            <h2>🏆 CLASSEMENT FINAL</h2>
+            <div class="leaderboard-container">
+                <table id="score-table">
+                    <thead><tr><th>Rang</th><th>Joueur</th><th>Score</th></tr></thead>
+                    <tbody id="leaderboard-body"></tbody>
+                </table>
+            </div>
+            <div class="leaderboard-actions">
+                <button class="action-btn" onclick="location.reload()">Nouvelle Partie</button>
+                <button class="secondary-btn themed-btn" onclick="goHome()">Retour Menu</button>
+            </div>
+        </section>
+
+    </main> <div id="story-modal" class="modal-blur hidden">
+        <div class="story-content">
+            <h3 id="story-title">MESSAGE AUX FANS</h3>
+            <p id="story-text">...</p>
+            <div class="story-controls">
+                <button class="themed-btn control-arrow" onclick="prevSlide()">⬅</button>
+                <button class="themed-btn control-arrow" onclick="nextSlide()">➡</button>
+            </div>
+            <button id="skip-intro-btn" class="small-btn themed-btn" onclick="finishIntro()">PASSER L'INTRO</button>
+        </div>
+    </div>
+
+    <div id="modal-add-player" class="modal hidden">
+        <div class="modal-content">
+            <h3>Nouveau Challenger</h3>
+            <input type="text" id="new-player-name" placeholder="Prénom">
+            <button class="themed-btn" onclick="confirmAddPlayer()">Ajouter</button>
+            <button class="cancel themed-btn" onclick="closeModal()">Annuler</button>
+        </div>
+    </div>
+
+    <div id="modal-remove-player" class="modal hidden">
+        <div class="modal-content">
+            <h3>Qui abandonne ?</h3>
+            <div id="remove-list"></div>
+            <button class="cancel themed-btn" onclick="closeModal()">Annuler</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
