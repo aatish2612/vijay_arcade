@@ -1,0 +1,224 @@
+:root {
+    --primary-color: #F4C430;
+    --accent-color: #E50914;
+    --bg-color: #121212;
+    --card-bg: #1E1E1E;
+    --text-color: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+}
+
+/* --- LAYOUT --- */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;    
+    padding: 20px;
+    width: 100%;
+    position: relative; /* Important */
+}
+
+.centered-view {
+    width: 100%;
+    max-width: 800px;
+    animation: fadeIn 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- CORRECTIF MODALE STORY (POP-UP) --- */
+.modal-blur {
+    position: fixed; /* CLÉ DU SUCCÈS : Sort du flux */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9); /* Fond très sombre */
+    backdrop-filter: blur(15px); /* Flou puissant */
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Au dessus de tout le reste */
+}
+
+.story-content {
+    background: #111;
+    border: 2px solid var(--primary-color);
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 700px;
+    width: 90%;
+    box-shadow: 0 0 60px rgba(244, 196, 48, 0.4); /* Grosse lueur jaune */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 400px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+#story-text {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin: 20px 0;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- BOUTONS STYLISÉS (PLUS DE BLANC) --- */
+.themed-btn {
+    background: #222;
+    color: var(--primary-color);
+    border: 1px solid #444;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    margin: 0 10px;
+}
+
+.themed-btn:hover {
+    background: var(--primary-color);
+    color: #000;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(244, 196, 48, 0.5);
+}
+
+.action-btn {
+    background: var(--primary-color);
+    color: #000;
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+    font-size: 1.3rem;
+    border-radius: 5px;
+    font-family: 'Bebas Neue', sans-serif;
+}
+.action-btn:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(244, 196, 48, 0.5); }
+
+.secondary-btn {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    margin-top: 30px;
+}
+.secondary-btn:hover { background: var(--primary-color); color: black; }
+
+/* --- INTERRUPTEUR --- */
+.switch-container { margin-bottom: 20px; }
+.mode-btn {
+    padding: 10px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; border: 2px solid #fff; font-size: 1.1rem; transition: all 0.3s; width: 280px;
+}
+.green-mode { background: #2ecc71; color: black; box-shadow: 0 0 15px #2ecc71; }
+.red-mode { background: var(--accent-color); color: white; box-shadow: 0 0 15px var(--accent-color); }
+
+/* --- GAME ELEMENTS --- */
+.question-block { margin-bottom: 50px !important; } /* ESPACE AJOUTÉ */
+
+.emoji-box {
+    font-size: 6rem;
+    background: #222; padding: 30px; border-radius: 15px; border: 2px solid #333;
+    letter-spacing: 15px;
+}
+
+.game-card {
+    background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px solid #333;
+    opacity: 0.5; transition: all 0.2s; position: relative;
+}
+.manual-active { opacity: 1; cursor: pointer; border-color: #555; }
+.manual-active:hover { border-color: var(--accent-color); transform: scale(1.05); }
+.roulette-active { opacity: 1; border-color: var(--accent-color); background: #3d1c1e; transform: scale(1.05); }
+.roulette-winner { opacity: 1; border-color: #2ecc71; background: #1a3320; transform: scale(1.1); box-shadow: 0 0 30px #2ecc71; }
+.disabled-card { opacity: 0.3; cursor: not-allowed; }
+
+/* --- STRUCTURE --- */
+#game-bar { width: 100%; background: #000; border-bottom: 2px solid var(--primary-color); display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+#timer-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-color); color: #000; font-weight: bold; font-size: 1.5rem; line-height: 50px; border: 3px solid #fff; }
+.timer-danger { background: var(--accent-color) !important; color: white !important; animation: pulse 0.5s infinite; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+header { padding: 20px; }
+h1 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; }
+.highlight { color: var(--primary-color); text-shadow: 0 0 10px rgba(244, 196, 48, 0.5); }
+
+input { padding: 15px; font-size: 1.2rem; border-radius: 5px; text-align: center; margin: 10px 0; width: 80%; max-width: 300px; background: #222; border: 1px solid #555; color: white; }
+.hidden { display: none !important; }
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+.option-btn { background: #333; color: white; padding: 15px; font-size: 1rem; border: 1px solid #444; cursor: pointer; width: 100%; }
+.option-btn:hover { background: #555; border-color: #fff; }
+.correct { background: #2ecc71 !important; color: black; }
+.wrong { background: #e74c3c !important; opacity: 0.5; }
+.feedback-text { font-size: 1.4rem; font-weight: bold; margin: 15px 0; min-height: 30px; }
+.spin-btn { border-radius: 50px; background: linear-gradient(to right, var(--primary-color), #d4af37); }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 900px; margin-top: 20px; }
+
+.player-name-display {
+    margin-left: 15px; color: var(--primary-color); text-transform: uppercase; font-weight: bold; font-size: 1.8rem; text-shadow: 0 0 10px rgba(244, 196, 48, 0.3);
+}
+
+/* MODALES SECONDAIRES */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 3000; }
+.modal-content { background: var(--card-bg); padding: 30px; border-radius: 10px; border: 1px solid var(--primary-color); min-width: 300px; }
+
+/* LEADERBOARD */
+.leaderboard-actions { display: flex; gap: 30px; justify-content: center; margin-top: 30px; }
+table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+th, td { padding: 15px; border-bottom: 1px solid #444; }
+th { color: var(--primary-color); font-size: 1.2rem; }
+
+/* DANS style.css */
+
+/* Espacement du Titre "C'est au tour de..." */
+#turn-indicator {
+    margin-bottom: 30px; /* Ajoute de l'espace sous le titre */
+}
+
+/* Espacement des Scores (Anonyme: 24...) */
+#mini-scores {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 40px; /* Ajoute un GROS espace sous les scores avant le bouton rouge */
+}
+
+/* Espacement du conteneur de l'interrupteur (Bouton Rouge/Vert) */
+.switch-container {
+    margin-bottom: 40px; /* Espace entre le bouton rouge et les cartes de jeux */
+}
+
+/* Petit design pour les boites de score pour qu'elles soient plus propres */
+#mini-scores span {
+    background: #222;
+    border: 1px solid #444;
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: #aaa;
+    font-weight: bold;
+}
